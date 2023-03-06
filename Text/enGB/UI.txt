@@ -1,0 +1,10 @@
+<--MainMenu-->
+<-page0->
+New Game|Start a new game!
+Options|Configure various settings!
+Exit|Exit the application
+<-page1->
+Option1|Test
+Option2|Test
+Option3|Test
+Go Back|Return to the previous menu

@@ -1,0 +1,10 @@
+<--MainMenu-->
+<-page0->
+USA!!USA!!|Start a new game!
+USA!!USA!!|Configure various settings!
+USA!!USA!!|Exit the application
+<-page1->
+wwwwwwwwwwwwwwwwwwwwwwwwww|Test
+lolololololololololololololololololololololol|Test
+笑笑笑笑笑笑笑笑笑笑笑笑笑笑笑笑笑笑|Test
+escae this hell|Return to the previous menu

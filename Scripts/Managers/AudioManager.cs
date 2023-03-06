@@ -40,11 +40,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        PlaySound("LcdDem OST - End", true);
-    }
-
     private void Update()
     {
         //SoundList sound = Array.Find(soundList, sound => sound.fadingOut);

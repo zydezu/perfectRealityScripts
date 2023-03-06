@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
@@ -58,12 +57,15 @@ public class GameManager : MonoBehaviour
 
     loadingScript loaderScript;
     SaveManager savemanager;
-    AudioManager audioManager;
 
     // CREATE A SINGLETON CLASS THAT MANAGES/STORES VARIABLES , THIS WILL GET ENTANGLED SOON
 
     private void Awake() //first thing that runs
     {
+        QualitySettings.vSyncCount = 0; // 0 off, 1 on
+        Application.targetFrameRate = Global.Settings.FPSLimit;
+        Screen.SetResolution(640, 480, true, 60); //resolution and hertz (change the monitor resolution)
+
         SceneManager.sceneLoaded += onSceneLoaded;
 
         if (instance == null)
@@ -84,12 +86,7 @@ public class GameManager : MonoBehaviour
 
     void SetupGame()
     {
-        QualitySettings.vSyncCount = 0; // 0 off, 1 on
-        Application.targetFrameRate = Global.Settings.FPSLimit;
-        // Screen.SetResolution(800, 600, false, 60);
-
         savemanager = new SaveManager();
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>(); //get audio manager CLASS so you can control it from here
 
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
@@ -153,7 +150,7 @@ public class GameManager : MonoBehaviour
 
     private void onSceneLoaded(Scene scene, LoadSceneMode mode) //an event that is called everytime a new scene is loaded
     {
-        DebugStats.AddLog("Loaded " + scene.name);
+        DebugStats.AddLog("Loaded scene: " + scene.name);
         switch(scene.buildIndex)
         {
             case 0:
@@ -161,7 +158,7 @@ public class GameManager : MonoBehaviour
             case 1:
                 SpawnPlayer();
                 ShowDialogue();
-                audioManager.PlaySound("Cat Soup OST - ブリキの花園~Metallic World~ TRACK 13", true); // need to move
+                AudioManager.instance.PlaySound("Cat Soup OST - ブリキの花園~Metallic World~ TRACK 13", true); // need to move
                 break;
             default:
                 DebugStats.AddLog("Unknown scene loaded!");

@@ -13,7 +13,7 @@ public class SetUpMenuOption : MonoBehaviour
 
     private GameObject textbox; // the text child GameObject
 
-    private bool slidingIn = false;
+    private int slidingIn = 0;
     private float initialXPos;
 
     private void Awake()
@@ -30,20 +30,54 @@ public class SetUpMenuOption : MonoBehaviour
 
     void SlideIn() // sliding in animation
     {
-        transform.position = new Vector3(initialXPos - 400 - (index * index * 1500), transform.position.y, transform.position.z); // this is dumb but it makes each element slide in after each other
-        slidingIn = true;
+        transform.position = new Vector3(initialXPos - 400 - (index * index * 1500), 250 - index * 80, transform.position.z); // this is dumb but it makes each element slide in after each other
+        slidingIn = 1;
+    }
+
+    public void MenuSelected()
+    {
+        if (page == 0)
+        {
+            switch (index)
+            {
+                case 0:
+                    loadingScript.instance.LoadScene(1); // use .instance to not have to set everything static
+                    break;
+                case 1:
+                    MainMenuManager.instance.ChangePage(1); // go to settings menu
+                    break;
+                case 2:
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (page == 1)
+        {
+            switch (index)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    MainMenuManager.instance.ChangePage(0); // go to main menu
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public void DestroySelf()
+    {
+        slidingIn = -1;
     }
 
     void Update()
     {
-        // sliding in animation
-        transform.position = new Vector3(transform.position.x + (initialXPos - transform.position.x) / 10, transform.position.y, transform.position.z);
-        if (Mathf.Round(transform.position.x) >= initialXPos)
-        {
-            slidingIn = false;
-            transform.position = new Vector3(70, transform.position.y, transform.position.z);
-        }
-
         if (MainMenuManager.selection == index)
         {
             textbox.GetComponent<Text>().text = ">" + menuName;
@@ -52,20 +86,24 @@ public class SetUpMenuOption : MonoBehaviour
         {
             textbox.GetComponent<Text>().text = menuName;
         }
-        if (MainMenuManager.optionSelected && MainMenuManager.selection == index && MainMenuManager.currentPage == page)
+
+        // sliding in animation
+        if (slidingIn == 1)
         {
-            if (page == 0)
+            transform.position = new Vector3(transform.position.x + (initialXPos - transform.position.x) / 10, 250 - index * 80, transform.position.z);
+            if (Mathf.Round(transform.position.x) >= initialXPos)
             {
-                switch (index)
-                {
-                    case 0:
-                        GameObject.Find("loader").GetComponent<loadingScript>().LoadScene(1);
-                        break;
-                    default:
-                        break;
-                }
+                slidingIn = 0;
+                transform.position = new Vector3(70, 250 - index * 80, transform.position.z);
             }
-            MainMenuManager.optionSelected = false;
+        }
+        if (slidingIn == -1)
+        {
+            transform.position = new Vector3(transform.position.x + (initialXPos - 500 - transform.position.x) / 10, transform.position.y, transform.position.z);
+            if (Mathf.Round(transform.position.x) <= initialXPos - 400)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
